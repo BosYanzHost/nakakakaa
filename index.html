@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyura Panel - Professional Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="gradient-orb orb1"></div>
+        <div class="gradient-orb orb2"></div>
+        <div class="gradient-orb orb3"></div>
+    </div>
+
+    <!-- LOGIN PAGE -->
+    <div class="page active" id="loginPage">
+        <div class="container">
+            <div class="login-card glass-effect">
+                <div class="login-header">
+                    <div class="logo-wrapper">
+                        <i class="fas fa-crown logo-icon"></i>
+                    </div>
+                    <h1 class="gradient-text">Zyura Panel</h1>
+                    <p class="subtitle">Login dengan Telegram ID Anda</p>
+                </div>
+
+                <div class="login-body">
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="input-group">
+                            <label>
+                                <i class="fab fa-telegram"></i>
+                                Telegram ID
+                            </label>
+                            <input 
+                                type="text" 
+                                id="telegramId" 
+                                placeholder="Contoh: 1234567890"
+                                required
+                            >
+                            <small class="input-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Cara dapat ID: chat @userinfobot di Telegram
+                            </small>
+                        </div>
+
+                        <button type="submit" class="login-btn" id="loginBtn">
+                            <span>Login ke Dashboard</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="login-footer">
+                    <p>Belum punya akses? <a href="https://t.me/akuzyura" target="_blank">Hubungi Owner</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page" id="dashboardPage">
+        <div class="dashboard-container">
+            <!-- SIDEBAR -->
+            <aside class="sidebar glass-effect" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="fas fa-crown"></i>
+                        <span>Zyura</span>
+                    </div>
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Profile Info di Sidebar -->
+                <div class="user-profile" id="userProfile">
+                    <div class="profile-avatar" id="profileAvatar">Z</div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="profileName">Loading...</div>
+                        <div class="profile-role" id="profileRole">-</div>
+                        <div class="profile-id" id="profileId">ID: -</div>
+                    </div>
+                </div>
+
+                <!-- NAVIGASI MENU -->
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showPage('dashboard', event)">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <!-- CREATE MENU -->
+                    <div class="nav-section">
+                        <div class="nav-section-title">CREATE</div>
+                        <a href="#" class="nav-item" onclick="showPage('createPanel', event)">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Panel</span>
+                        </a>
+                        <a href="#" class="nav-item" onclick="showPage('adminPanel', event)">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Admin Panel</span>
+                        </a>
+                    </div>
+
+                    <!-- SERVER MENU -->
+                    <div class="nav-section">
+                        <div class="nav-section-title">SERVER</div>
+                        <a href="#" class="nav-item" onclick="showPage('serverMenu', event)">
+                            <i class="fas fa-server"></i>
+                            <span>Server Menu</span>
+                        </a>
+                    </div>
+
+                    <!-- OWNER MENU -->
+                    <div class="nav-section" id="ownerMenuSection" style="display: none;">
+                        <div class="nav-section-title">OWNER</div>
+                        <a href="#" class="nav-item" onclick="showPage('ownerMenu', event)">
+                            <i class="fas fa-crown"></i>
+                            <span>Owner Menu</span>
+                        </a>
+                    </div>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <!-- Header dengan Profile -->
+                <header class="content-header glass-effect">
+                    <div class="header-left">
+                        <button class="menu-toggle" onclick="toggleMobileSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h2 id="pageTitle">Dashboard</h2>
+                    </div>
+                    <div class="header-right">
+                        <div class="datetime" id="currentDateTime"></div>
+                        <div class="profile-dropdown" onclick="toggleProfileDropdown()">
+                            <div class="profile-mini">
+                                <span id="headerProfileName">User</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="dropdown-menu glass-effect" id="profileDropdown">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar" id="dropdownAvatar">Z</div>
+                                    <div>
+                                        <div class="dropdown-name" id="dropdownName">@username</div>
+                                        <div class="dropdown-role" id="dropdownRole">Role</div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="dropdown-item">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>ID: <span id="dropdownId">-</span></span>
+                                    </div>
+                                    <div class="dropdown-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Login: <span id="dropdownTime">-</span></span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <button onclick="logout()" class="dropdown-logout">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- CONTENT BODY -->
+                <div class="content-body" id="contentBody">
+                    <!-- DASHBOARD CONTENT -->
+                    <div class="page-content active" id="dashboardContent">
+                        <div class="welcome-section glass-effect">
+                            <h2>Selamat Datang, <span id="welcomeUsername">User</span>! 👋</h2>
+                            <p>Anda login sebagai <span class="role-badge" id="welcomeRole">-</span></p>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card glass-effect">
+                                <div class="stat-icon"><i class="fas fa-server"></i></div>
+                                <div class="stat-info">
+                                    <h3>Total Servers</h3>
+                                    <div class="stat-value" id="totalServers">0</div>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-effect">
+                                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                                <div class="stat-info">
+                                    <h3>Total Users</h3>
+                                    <div class="stat-value" id="totalUsers">0</div>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-effect">
+                                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="stat-info">
+                                    <h3>Active Panels</h3>
+                                    <div class="stat-value" id="activePanels">0</div>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-effect">
+                                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                                <div class="stat-info">
+                                    <h3>Uptime</h3>
+                                    <div class="stat-value" id="uptime">99.9%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-menu">
+                            <h3>Quick Actions</h3>
+                            <div class="menu-grid">
+                                <div class="menu-item glass-effect" onclick="showPage('createPanel', event)">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Create Panel</span>
+                                </div>
+                                <div class="menu-item glass-effect" onclick="showPage('adminPanel', event)">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Admin Panel</span>
+                                </div>
+                                <div class="menu-item glass-effect" onclick="showPage('serverMenu', event)">
+                                    <i class="fas fa-server"></i>
+                                    <span>Server Menu</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CREATE PANEL CONTENT -->
+                    <div class="page-content" id="createPanelContent">
+                        <h2>Create Panel</h2>
+                        <div class="create-form glass-effect">
+                            <form id="createPanelForm" onsubmit="createPanel(event)">
+                                <div class="form-group">
+                                    <label>Nama Panel</label>
+                                    <input type="text" id="panelName" placeholder="Contoh: panelku" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pilih Server</label>
+                                    <select id="serverSelect" required>
+                                        <option value="">-- Pilih Server --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Spesifikasi</label>
+                                    <div class="spec-grid">
+                                        <button type="button" class="spec-btn" data-spec="1gb">1GB</button>
+                                        <button type="button" class="spec-btn" data-spec="2gb">2GB</button>
+                                        <button type="button" class="spec-btn" data-spec="3gb">3GB</button>
+                                        <button type="button" class="spec-btn" data-spec="4gb">4GB</button>
+                                        <button type="button" class="spec-btn" data-spec="5gb">5GB</button>
+                                        <button type="button" class="spec-btn" data-spec="6gb">6GB</button>
+                                        <button type="button" class="spec-btn" data-spec="7gb">7GB</button>
+                                        <button type="button" class="spec-btn" data-spec="8gb">8GB</button>
+                                        <button type="button" class="spec-btn" data-spec="9gb">9GB</button>
+                                        <button type="button" class="spec-btn" data-spec="10gb">10GB</button>
+                                        <button type="button" class="spec-btn" data-spec="unli">Unlimited</button>
+                                    </div>
+                                    <input type="hidden" id="selectedSpec">
+                                </div>
+                                <button type="submit" class="submit-btn">Buat Panel</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN PANEL CONTENT -->
+                    <div class="page-content" id="adminPanelContent">
+                        <h2>Create Admin Panel</h2>
+                        <div class="create-form glass-effect">
+                            <form id="adminPanelForm" onsubmit="createAdminPanel(event)">
+                                <div class="form-group">
+                                    <label>Username Admin</label>
+                                    <input type="text" id="adminUsername" placeholder="Contoh: adminku" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pilih Server</label>
+                                    <select id="adminServerSelect" required>
+                                        <option value="">-- Pilih Server --</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="submit-btn">Buat Admin Panel</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- SERVER MENU CONTENT -->
+                    <div class="page-content" id="serverMenuContent">
+                        <h2>Server Menu</h2>
+                        <div class="server-menu-grid">
+                            <div class="server-menu-card glass-effect" onclick="showAddServerModal()">
+                                <i class="fas fa-plus-circle"></i>
+                                <h3>Add Server</h3>
+                                <p>Tambah server baru</p>
+                            </div>
+                            <div class="server-menu-card glass-effect" onclick="showDeleteServerModal()">
+                                <i class="fas fa-trash"></i>
+                                <h3>Delete Server</h3>
+                                <p>Hapus server by ID</p>
+                            </div>
+                            <div class="server-menu-card glass-effect" onclick="deleteAllServers()">
+                                <i class="fas fa-trash-alt"></i>
+                                <h3>Del All Server</h3>
+                                <p>Hapus semua server</p>
+                            </div>
+                            <div class="server-menu-card glass-effect" onclick="delSrvOff()">
+                                <i class="fas fa-power-off"></i>
+                                <h3>Del Srv Off</h3>
+                                <p>Hapus server offline</p>
+                            </div>
+                            <div class="server-menu-card glass-effect" onclick="totalServer()">
+                                <i class="fas fa-calculator"></i>
+                                <h3>Total Server</h3>
+                                <p>Hitung total server</p>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 30px; color: white;">Daftar Server</h3>
+                        <div class="servers-list" id="serversList"></div>
+                    </div>
+
+                    <!-- OWNER MENU CONTENT -->
+                    <div class="page-content" id="ownerMenuContent">
+                        <h2>Owner Menu</h2>
+                        <div class="owner-menu-grid">
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('ceo')">
+                                <i class="fas fa-crown"></i>
+                                <h3>Add CEO</h3>
+                                <p>Tambah CEO Panel</p>
+                            </div>
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('tk')">
+                                <i class="fas fa-hand-peace"></i>
+                                <h3>Add TK</h3>
+                                <p>Tambah Tangan Kanan</p>
+                            </div>
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('pt')">
+                                <i class="fas fa-building"></i>
+                                <h3>Add PT</h3>
+                                <p>Tambah PT Panel</p>
+                            </div>
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('ress')">
+                                <i class="fas fa-store"></i>
+                                <h3>Add Reseller</h3>
+                                <p>Tambah Reseller</p>
+                            </div>
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('own')">
+                                <i class="fas fa-user-tie"></i>
+                                <h3>Add Owner</h3>
+                                <p>Tambah Owner Panel</p>
+                            </div>
+                            <div class="owner-menu-card glass-effect" onclick="showAddRoleModal('pemilik')">
+                                <i class="fas fa-house"></i>
+                                <h3>Add Pemilik</h3>
+                                <p>Tambah Pemilik Panel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL RESULT -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content glass-effect">
+            <div class="modal-header">
+                <i class="fas fa-check-circle modal-success-icon"></i>
+                <h3 id="modalTitle">Berhasil!</h3>
+            </div>
+            <div class="modal-body">
+                <div class="result-box" id="resultBox"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn copy-btn" onclick="copyResult()">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+                <button class="modal-btn close-btn" onclick="closeModal()">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADD SERVER -->
+    <div class="modal" id="addServerModal">
+        <div class="modal-content glass-effect">
+            <h3>Tambah Server Baru</h3>
+            <form id="addServerForm" onsubmit="addServer(event)">
+                <div class="form-group">
+                    <label>Domain</label>
+                    <input type="text" id="serverDomain" placeholder="https://panel.com" required>
+                </div>
+                <div class="form-group">
+                    <label>PLTA</label>
+                    <input type="text" id="serverPlta" placeholder="ptla_xxx" required>
+                </div>
+                <div class="form-group">
+                    <label>PLTC</label>
+                    <input type="text" id="serverPltc" placeholder="ptlc_xxx" required>
+                </div>
+                <div class="form-group">
+                    <label>Nama Server (opsional)</label>
+                    <input type="text" id="serverName" placeholder="Server Singapore">
+                </div>
+                <button type="submit" class="submit-btn">Tambah Server</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('addServerModal')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DELETE SERVER -->
+    <div class="modal" id="deleteServerModal">
+        <div class="modal-content glass-effect">
+            <h3>Hapus Server</h3>
+            <form id="deleteServerForm" onsubmit="deleteServer(event)">
+                <div class="form-group">
+                    <label>ID Server</label>
+                    <input type="text" id="deleteServerId" placeholder="Masukkan ID server" required>
+                </div>
+                <button type="submit" class="submit-btn delete-btn">Hapus Server</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('deleteServerModal')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ADD ROLE -->
+    <div class="modal" id="addRoleModal">
+        <div class="modal-content glass-effect">
+            <h3 id="addRoleModalTitle">Tambah Role</h3>
+            <form id="addRoleForm" onsubmit="addRole(event)">
+                <input type="hidden" id="roleType">
+                <div class="form-group">
+                    <label>Telegram ID</label>
+                    <input type="text" id="roleTelegramId" placeholder="Masukkan ID Telegram" required>
+                </div>
+                <div class="form-group">
+                    <label>Username (opsional)</label>
+                    <input type="text" id="roleUsername" placeholder="Masukkan username">
+                </div>
+                <button type="submit" class="submit-btn">Tambah</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('addRoleModal')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOADING MODAL -->
+    <div class="modal" id="loadingModal">
+        <div class="modal-content glass-effect loading-content">
+            <div class="loader"></div>
+            <h3>Processing...</h3>
+            <p>Mohon tunggu sebentar</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
